@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  buid_and_test:
+  build_and_test:
     docker:
       - image: circleci/python:3.6.4
     steps:
