@@ -1,11 +1,31 @@
 version: 2.1
 jobs:
-  build:
+  buid_and_test:
     docker:
-      - image: alpine:3.7
+      - image: circleci/python:3.6.4
     steps:
+      - checkout
       - run:
-          name: The First Step
+          name: Install Python Dependencies
           command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
+            cd venv/scripts
+            activate
+            cd ../..
+            pip install -r requirements.txt
+        - run:
+            name: Run Linting
+            command: |
+              flake8
+        - run:
+            name: Run Unit Tests
+            command: |
+              pytest --html=test_reports/pytest_report.html
+        - store_test_results:
+            path: test_reports
+        - store_artifacts:
+            path: test_reports
+workflows:
+  build_test:
+    jobs:
+      - build_and_test
+
