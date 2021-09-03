@@ -2,16 +2,12 @@ version: 2.1
 jobs:
   build_and_test:
     docker:
-      - image: circleci/python:3.6.4
+      - image: circleci/python:3.9
     steps:
       - checkout
-      - run:
-          name: Install Python Dependencies
-          command: |
-            cd venv/scripts
-            activate
-            cd ../..
-            pip install -r requirements.txt
+      - python/install-packages:
+          pkg-manager: pip
+          pip-dependency-file: requirements.txt
       - run:
           name: Run Linting
           command: |
