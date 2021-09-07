@@ -29,15 +29,17 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - python/install-packages:
-          pkg-manager: pip
-          pip-dependency-file: requirements.txt
+#      - python/install-packages:
+#          pkg-manager: pip
+#          pip-dependency-file: requirements.txt
       - run:
           name: Build Docker image
           command: |
-            docker build --tag python_django .
-            docker run --publish 8000:8000 python_django
-
+#            docker build --tag python_django .
+#            docker build -t myimage:latest --label git-commit=$GIT_COMMIT .
+#            docker run --publish 8000:8000 python_django
+#             docker build -t myimage:(git log -1 --pretty=%!H(MISSING)) .
+             docker build -t flask-local-build --build-arg GIT_COMMIT=$(git log -1 --format=%h) .
 
 workflows:
   build_and_test:
