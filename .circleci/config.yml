@@ -22,8 +22,27 @@ jobs:
           path: test_reports
       - store_artifacts:
           path: test_reports
+
+  containerization:
+    docker:
+      - image: circleci/python:3.9
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+          pip-dependency-file: requirements.txt
+      - run:
+          name: Build and push image
+          command: |
+            docker-compose up
+
 workflows:
   build_and_test:
     jobs:
       - build_and_test
+      - containerization:
+          requires:
+            - build_and_test
+
+
 
