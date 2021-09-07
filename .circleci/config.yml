@@ -34,7 +34,7 @@ jobs:
       - run:
           name: Build and push image
           command: |
-            sudo systemctl start docker
+            sudo /etc/init.d/docker start
             docker-compose up -d
 
 workflows:
