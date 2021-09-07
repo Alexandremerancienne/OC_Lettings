@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t flask-local-build --build-arg GIT_COMMIT=$(git log -1 --format=%h) .
+            docker build -t --build-arg GIT_COMMIT=$(git log -1 --format=%h) .
 
 workflows:
   build_and_test:
