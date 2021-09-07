@@ -32,10 +32,10 @@ jobs:
 #      - python/install-packages:
 #          pkg-manager: pip
 #          pip-dependency-file: requirements.txt
-      - run:
-          name: Build Docker image
-          command: |
-            docker build -t --build-arg GIT_COMMIT=$(git log -1 --format=%h) .
+      - docker/build:
+          name: Build Docker Image
+          image: myimage
+          tag: '$CIRCLE_SHA1'
 
 workflows:
   build_and_test:
