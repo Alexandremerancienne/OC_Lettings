@@ -25,7 +25,7 @@ jobs:
 
   containerization:
     docker:
-      - image: circleci/buildpack-deps:stretch
+      - image: circleci/python:3.9
     steps:
       - checkout
       - setup_remote_docker
@@ -35,7 +35,9 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t $IMAGE_NAME:latest .
+            docker build --tag python_django .
+            docker run --publish 8000:8000 python_django
+
 
 workflows:
   build_and_test:
