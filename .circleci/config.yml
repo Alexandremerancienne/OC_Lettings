@@ -34,8 +34,7 @@ jobs:
       - run:
           name: Build and push image
           command: |
-            sudo service docker start
-            docker-compose up -d
+            docker-compose up
 
 workflows:
   build_and_test:
