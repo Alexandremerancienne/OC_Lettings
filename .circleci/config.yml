@@ -28,13 +28,14 @@ jobs:
       - image: circleci/python:3.9
     steps:
       - checkout
+      - setup_remote_docker
       - python/install-packages:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
       - run:
-          name: Build and push image
+          name: Build Docker image
           command: |
-            docker-compose up
+            docker build -t $IMAGE_NAME:latest .
 
 workflows:
   build_and_test:
