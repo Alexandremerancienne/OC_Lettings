@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   python: circleci/python@1.4.0
-  docker: circleci/docker@1.7.0
 jobs:
   build_and_test:
     docker:
@@ -24,27 +23,9 @@ jobs:
       - store_artifacts:
           path: test_reports
 
-  containerization:
-    docker:
-      - image: circleci/python:3.9
-    steps:
-      - checkout
-      - setup_remote_docker
-#      - python/install-packages:
-#          pkg-manager: pip
-#          pip-dependency-file: requirements.txt
-      - docker/build:
-          name: Build Docker Image
-          image: myimage
-          tag: '$CIRCLE_SHA1'
-
 workflows:
   build_and_test:
     jobs:
       - build_and_test
-      - containerization:
-          requires:
-            - build_and_test
-
 
 
