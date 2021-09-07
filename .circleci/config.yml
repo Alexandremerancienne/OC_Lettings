@@ -32,10 +32,13 @@ jobs:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
       - run:
-          name: Build and push image
+          name: Build using `docker-compose`
           command: |
-            docker start
-            docker-compose up
+            docker-compose build
+      - run:
+          name: Push to Docker Hub
+          command: |
+            docker-compose push
 
 workflows:
   build_and_test:
