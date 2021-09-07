@@ -1,6 +1,9 @@
 version: 2.1
+
 orbs:
   python: circleci/python@1.4.0
+  docker: circleci/docker@1.7.0
+
 jobs:
   build_and_test:
     docker:
@@ -23,9 +26,25 @@ jobs:
       - store_artifacts:
           path: test_reports
 
+  containerization:
+    docker:
+      - image: circleci/python:3.9
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build and push Docker image
+          command: |
+            docker build -t alexmrc/oc-lettings-site:$CIRCLE_SHA1 .
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push alexmrc/oc-lettings-site:$CIRCLE_SHA1
+
 workflows:
   build_and_test:
     jobs:
       - build_and_test
+      - containerization:
+          requires:
+            - build_and_test
 
 
