@@ -35,9 +35,9 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |
-            docker build -t alexmrc/oc-lettings-site:$CIRCLE_SHA1 .
-            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            docker push alexmrc/oc-lettings-site:$CIRCLE_SHA1
+            docker build -t $DOCKER_LOGIN/ocl:$CIRCLE_SHA1 .
+            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push $DOCKER_LOGIN/ocl:$CIRCLE_SHA1
 
 workflows:
   build_and_test:
@@ -46,5 +46,3 @@ workflows:
       - containerization:
           requires:
             - build_and_test
-
-
