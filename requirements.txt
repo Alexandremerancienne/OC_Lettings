@@ -4,6 +4,7 @@ attrs==21.2.0
 colorama==0.4.4
 coverage==5.5
 Django==3.0
+django-environ==0.6.0
 entrypoints==0.3
 flake8==3.7.0
 iniconfig==1.1.1
@@ -23,3 +24,4 @@ pytz==2021.1
 six==1.16.0
 sqlparse==0.4.1
 toml==0.10.2
+whitenoise==5.3.0

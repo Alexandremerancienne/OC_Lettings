@@ -39,10 +39,36 @@ jobs:
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push $DOCKER_LOGIN/ocl:$CIRCLE_SHA1
 
+  deploy_production:
+      machine: true
+      steps:
+        - checkout
+        - run:
+            name: Build and push Docker image to Heroku
+            command: |
+              sudo curl https://cli-assets.heroku.com/install.sh | sh
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku apps:create -a ${HEROKU_APP}
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set SECRET_KEY=${SECRET_KEY} -a ${HEROKU_APP}
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a ${HEROKU_APP} web
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a ${HEROKU_APP} web
+
 workflows:
-  build_and_test:
+  build_test_deploy:
     jobs:
-      - build_and_test
+      - build_and_test:
+          filters:
+            branches:
+              only: main
       - containerization:
           requires:
             - build_and_test
+          filters:
+            branches:
+              only: main
+      - deploy_production:
+          requires:
+            - containerization
+          filters:
+            branches:
+              only: main
