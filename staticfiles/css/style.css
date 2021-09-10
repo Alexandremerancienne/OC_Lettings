@@ -1,0 +1,47 @@
+body{
+    width:70%;
+    margin:auto;
+    background-color:#FFEFD5;
+}
+
+h1{
+    text-align:center;
+    font-size:3em;
+}
+
+img{
+  display: block;
+  margin: auto;
+  width: 40%;
+  margin-top:20px;
+  margin-bottom:30px;
+}
+
+ul{
+  padding:0px;
+  margin-top:60px;
+  margin-bottom:80px;
+}
+
+#website-menu,
+#website-extended-menu{
+    width:40%;
+    margin:auto;
+    display:flex;
+    justify-content: space-between;
+}
+
+#website-options{
+  margin-top:60px;
+  margin-bottom:80px;
+  text-align:center;
+}
+
+p{
+    font-size:1.5em;
+}
+
+a{
+    font-size:2em;
+    color:#0645AD;
+}
