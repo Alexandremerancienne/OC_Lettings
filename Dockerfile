@@ -1,10 +1,19 @@
 FROM python:3.9
 
-WORKDIR /oclettings
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV DEBUG=0
+ENV PORT 8000
+
+EXPOSE 8000
+
+WORKDIR /app
 
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 COPY . .
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+RUN python manage.py collectstatic --noinput --clear
+
+CMD gunicorn oc_lettings_site.wsgi:application --bind 0.0.0.0:$PORT

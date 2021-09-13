@@ -1,15 +1,18 @@
-import os
 import environ
+import os
+
 
 import django_heroku
 
-env = environ.Env()
+env = environ.Env(
+    DEBUG=(bool, False)
+)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-DEBUG = True
+DEBUG = env('DEBUG')
 
 SECRET_KEY = env('SECRET_KEY')
 
@@ -27,7 +30,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'lettings.apps.LettingsConfig',
     'profiles.apps.ProfilesConfig',
-    'environ',
 ]
 
 MIDDLEWARE = [
