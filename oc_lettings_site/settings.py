@@ -9,6 +9,10 @@ env = environ.Env(
     DEBUG=(bool, False)
 )
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 sentry_sdk.init(
     dsn="https://fc35f5a615c34bb281c526afbfa75436@o995275.ingest.sentry.io/5958429",
     integrations=[DjangoIntegration()],
@@ -18,9 +22,6 @@ sentry_sdk.init(
     send_default_pii=True
 )
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 DEBUG = env('DEBUG')
 
