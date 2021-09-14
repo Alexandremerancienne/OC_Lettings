@@ -1,11 +1,21 @@
 import environ
 import os
-
-
 import django_heroku
+import sentry_sdk
+
+from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env(
     DEBUG=(bool, False)
+)
+
+sentry_sdk.init(
+    dsn="https://fc35f5a615c34bb281c526afbfa75436@o995275.ingest.sentry.io/5958429",
+    integrations=[DjangoIntegration()],
+
+    traces_sample_rate=1.0,
+
+    send_default_pii=True
 )
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
