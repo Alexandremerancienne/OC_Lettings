@@ -109,7 +109,7 @@ then `print(get_random_secret_key())`
 
 ## Using a Docker image locally
 - After the containerization job of the CI/CD pipeline is completed, a Docker image is created on Docker Hub. To retrieve the image and run it locally, launch the following command from your terminal (run as Administrator for Git Bash):
-`docker run --pull always -p 8000:8000 --name <nom_local> <nom_image_docker>:<tag_image>`
+`docker run --pull always -p 8000:8000 --name <container_name> <image_name>:<image_tag> `
 - To retrieve an image tag, search the image on Docker Hub then select “Tag” on the image’s page.
 
 ***
@@ -225,5 +225,5 @@ puis `print(get_random_secret_key())`
 
 ## Utilisation de votre image Docker en local
 - À l’issue du travail de conteneurisation, une image est créée sur Docker Hub. Pour charger l’image et l’exécuter en local, lancer depuis votre terminal la commande (en mode Administrateur pour Git Bash):
-`docker run --pull always -p 8000:8000 --name <nom_local> <nom_image_docker>:<tag_image>`
+`docker run --pull always -p 8000:8000 --name <nom_conteneur> <nom_image>:<tag_image> `
 - Pour connaître le tag d’une image, chercher l’image sur Docker Hub puis cliquer sur « Tag » sur la page relative à l’image.
