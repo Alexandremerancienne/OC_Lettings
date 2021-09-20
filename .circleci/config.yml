@@ -8,43 +8,52 @@ jobs:
     docker:
       - image: circleci/python:3.9
     steps:
-      - checkout
-      - restore_cache:
+      - checkout # Pulls source code to the working directory
+      - restore_cache: # Restores saved dependency cache
+        # if the Branch key template or requirements.txt files
+        # have not changed since the previous run
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
-      - run:
+      - run: # Installs and activates virtual environment with pip
           name: Install dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
             pip install flake8
-      - save_cache:
+      - save_cache: # Saves dependency cache
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
             - "venv"
-      - run:
+      - run: # Runs linting with flake8
           name: Run Linting
           command: |
             . venv/bin/activate
             flake8
-      - run:
+      - run: # Runs tests with pytest
           name: Run Unit Tests
           command: |
             . venv/bin/activate
             pytest --html=test_reports/pytest_report.html
-      - store_test_results:
+      - store_test_results: # Stores test results in test_reports directory
           path: test_reports
-      - store_artifacts:
+      - store_artifacts: # Stores logs, binaries, etc.
+        # so that they are accessible by the app in later runs
           path: test_reports
 
   containerization:
     docker:
       - image: circleci/python:3.9
     steps:
-      - checkout
-      - setup_remote_docker
+      - checkout # Pulls source code to the working directory
+      - setup_remote_docker # Creates remote environment
+        # and configures current container to use it.
       - run:
           name: Build and push Docker image
+          # Commands:
+          # 1. Builds Docker image with last commit as tag
+          # 2. Logs in to Docker account with environment variables
+          # DOCKER_LOGIN and DOCKER_PWD to bypass browser
+          # 3. Pushes image to Docker Hub
           command: |
             docker build -t $DOCKER_LOGIN/ocl:$CIRCLE_SHA1 .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
@@ -53,9 +62,17 @@ jobs:
   deploy_production:
       machine: true
       steps:
-        - checkout
+        - checkout # Pulls source code to the working directory
         - run:
             name: Build and push Docker image to Heroku
+            # Commands:
+            # 1. Installs Heroku CLI on the build machine
+            # 2. Creates Heroku app
+            # 3. Logs in to Heroku registry with environment variable
+            # HEROKU_TOKEN to bypass browser
+            # 4. Sets Heroku config (Django Secret Key, Sentry DSN)
+            # 5. Builds and pushes Docker image to Heroku registry
+            # 6. Releases the new version of app
             command: |
               sudo curl https://cli-assets.heroku.com/install.sh | sh
               HEROKU_API_KEY=${HEROKU_TOKEN} heroku apps:create -a ${HEROKU_APP}
