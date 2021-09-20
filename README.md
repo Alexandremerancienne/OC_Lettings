@@ -9,7 +9,7 @@ Orange County Lettings Website
 - GitHub account with access to this repository
 - Git CLI
 - SQLite3 CLI
-- Python Interpréter >= 3.6
+- Python Interpreter >= 3.6
 
 We assume that the `python` command launches Python Interpreter from OS shell (unless you have activated a virtual environment).
 
